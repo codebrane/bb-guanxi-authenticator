@@ -1,0 +1,76 @@
+<!-- This is the SAML2 metadata for the Blackboard Guard. Search for GX: to customise -->
+<EntityDescriptor entityID="GX:YOUR_BLACKBOARD_GUARD_ENTITY_ID">
+    <SPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:1.1:protocol         urn:oasis:names:tc:SAML:1.0:protocol         urn:oasis:names:tc:SAML:2.0:protocol">
+        <KeyDescriptor use="signing">
+            <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+                <ds:KeyName>GX:YOUR_BLACKBOARD_GUARD_ENTITY_ID</ds:KeyName>
+                <ds:X509Data>
+                    <ds:X509Certificate>
+                      <!-- GX:Replace this with the X509 from the Guard's Keystore at the Engine -->
+                      MIIDgjCCA0KgAwIBAgIGASZ08ILPMAkGByqGSM44BAMwIjEgMB4GA1UEAwwXR3VhbnhpLkVuZ2lu
+                      ZS5sb2NhbGhvc3QwHhcNMTAwMTI4MTIyODI0WhcNMTAwMjE3MTIzODI0WjByMQswCQYDVQQGEwJH
+                      QjESMBAGA1UECBMJSGlnaGxhbmRzMRUwEwYDVQQHDAxJc2xlIG9mIFNreWUxDDAKBgNVBAoTA1VI
+                      STEMMAoGA1UECxMDV1dXMRwwGgYDVQQDExNiYmd1YXJkLXNuZWFjaGRhaXJlMIIBuDCCASwGByqG
+                      SM44BAEwggEfAoGBAP1/U4EddRIpUt9KnC7s5Of2EbdSPO9EAMMeP4C2USZpRV1AIlH7WT2NWPq/
+                      xfW6MPbLm1Vs14E7gB00b/JmYLdrmVClpJ+f6AR7ECLCT7up1/63xhv4O1fnxqimFQ8E+4P208Ue
+                      wwI1VBNaFpEy9nXzrith1yrv8iIDGZ3RSAHHAhUAl2BQjxUjC8yykrmCouuEC/BYHPUCgYEA9+Gg
+                      hdabPd7LvKtcNrhXuXmUr7v6OuqC+VdMCz0HgmdRWVeOutRZT+ZxBxCBgLRJFnEj6EwoFhO3zwky
+                      jMim4TwWeotUfI0o4KOuHiuzpnWRbqN/C/ohNWLx+2J6ASQ7zKTxvqhRkImog9/hWuWfBpKLZl6A
+                      e1UlZAFMO/7PSSoDgYUAAoGBAIAhCRoO12CLs1+3Lu79q9Sjw/6jHbxctQmA0ylNdtq/rxrGzO9j
+                      2OWL7NeL3T/Og9HzOpCqgNOOxTF65P1FvGgDHoxPY3Jc6hkvuiYOX6wY4fKYAqbdomywwmQg6TJd
+                      lNQDAaDTmyKq0iUjD9hiGxCN1PZ3IWXupevZN4nvcuxKo4GzMIGwMFkGA1UdIwRSMFCAFO1FFMvF
+                      5ZVXLgTkH2t05U0NE0OsoSakJDAiMSAwHgYDVQQDDBdHdWFueGkuRW5naW5lLmxvY2FsaG9zdIIQ
+                      ICcC3HcE+Yie3FMAMu9cyjAdBgNVHQ4EFgQUNBh9acfKg5rZovKIsvvJKUjVAsswDAYDVR0TAQH/
+                      BAIwADAOBgNVHQ8BAf8EBAMCBaAwFgYDVR0lAQH/BAwwCgYIKwYBBQUHAwIwCQYHKoZIzjgEAwMv
+                      ADAsAhRVTVsbD7MFPuxdXsXZwAfV83XL6wIUALd1boxE5wMqEA2N4JFCrALCpNE=
+                    </ds:X509Certificate>
+                </ds:X509Data>
+            </ds:KeyInfo>
+        </KeyDescriptor>
+        <KeyDescriptor use="encryption">
+            <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+                <ds:KeyName>GX:YOUR_BLACKBOARD_GUARD_ENTITY_ID</ds:KeyName>
+                <ds:X509Data>
+                    <ds:X509Certificate>
+                      <!-- GX:Replace this with the X509 from the Guard's Keystore at the Engine -->
+                      MIIDgjCCA0KgAwIBAgIGASZ08ILPMAkGByqGSM44BAMwIjEgMB4GA1UEAwwXR3VhbnhpLkVuZ2lu
+                      ZS5sb2NhbGhvc3QwHhcNMTAwMTI4MTIyODI0WhcNMTAwMjE3MTIzODI0WjByMQswCQYDVQQGEwJH
+                      QjESMBAGA1UECBMJSGlnaGxhbmRzMRUwEwYDVQQHDAxJc2xlIG9mIFNreWUxDDAKBgNVBAoTA1VI
+                      STEMMAoGA1UECxMDV1dXMRwwGgYDVQQDExNiYmd1YXJkLXNuZWFjaGRhaXJlMIIBuDCCASwGByqG
+                      SM44BAEwggEfAoGBAP1/U4EddRIpUt9KnC7s5Of2EbdSPO9EAMMeP4C2USZpRV1AIlH7WT2NWPq/
+                      xfW6MPbLm1Vs14E7gB00b/JmYLdrmVClpJ+f6AR7ECLCT7up1/63xhv4O1fnxqimFQ8E+4P208Ue
+                      wwI1VBNaFpEy9nXzrith1yrv8iIDGZ3RSAHHAhUAl2BQjxUjC8yykrmCouuEC/BYHPUCgYEA9+Gg
+                      hdabPd7LvKtcNrhXuXmUr7v6OuqC+VdMCz0HgmdRWVeOutRZT+ZxBxCBgLRJFnEj6EwoFhO3zwky
+                      jMim4TwWeotUfI0o4KOuHiuzpnWRbqN/C/ohNWLx+2J6ASQ7zKTxvqhRkImog9/hWuWfBpKLZl6A
+                      e1UlZAFMO/7PSSoDgYUAAoGBAIAhCRoO12CLs1+3Lu79q9Sjw/6jHbxctQmA0ylNdtq/rxrGzO9j
+                      2OWL7NeL3T/Og9HzOpCqgNOOxTF65P1FvGgDHoxPY3Jc6hkvuiYOX6wY4fKYAqbdomywwmQg6TJd
+                      lNQDAaDTmyKq0iUjD9hiGxCN1PZ3IWXupevZN4nvcuxKo4GzMIGwMFkGA1UdIwRSMFCAFO1FFMvF
+                      5ZVXLgTkH2t05U0NE0OsoSakJDAiMSAwHgYDVQQDDBdHdWFueGkuRW5naW5lLmxvY2FsaG9zdIIQ
+                      ICcC3HcE+Yie3FMAMu9cyjAdBgNVHQ4EFgQUNBh9acfKg5rZovKIsvvJKUjVAsswDAYDVR0TAQH/
+                      BAIwADAOBgNVHQ8BAf8EBAMCBaAwFgYDVR0lAQH/BAwwCgYIKwYBBQUHAwIwCQYHKoZIzjgEAwMv
+                      ADAsAhRVTVsbD7MFPuxdXsXZwAfV83XL6wIUALd1boxE5wMqEA2N4JFCrALCpNE=
+                    </ds:X509Certificate>
+                </ds:X509Data>
+            </ds:KeyInfo>
+        </KeyDescriptor>
+        <AssertionConsumerService Binding="urn:oasis:names:tc:SAML:1.0:profiles:browser-post" Location="GX:https://your.engine.url/samlengine/shibb/acs" index="0"></AssertionConsumerService>
+        <AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="GX:https://your.engine.url/samlengine/s2/wbsso/acs" index="1"></AssertionConsumerService>
+        <AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="GX:https://your.engine.url/samlengine/s2/wbsso/acs" index="3"></AssertionConsumerService>
+    </SPSSODescriptor>
+    <Organization>
+        <OrganizationName xml:lang="en">GX:Your ORG</OrganizationName>
+        <OrganizationDisplayName xml:lang="en">GX:Your ORG display name</OrganizationDisplayName>
+        <OrganizationURL xml:lang="en">GX:Your ORG URL</OrganizationURL>
+    </Organization>
+    <ContactPerson contactType="support">
+        <GivenName>GX:Your first name</GivenName>
+        <SurName>GX:Your surname</SurName>
+        <EmailAddress>GX:mailto:your@email.address</EmailAddress>
+    </ContactPerson>
+    <ContactPerson contactType="technical">
+      <GivenName>GX:Your first name</GivenName>
+      <SurName>GX:Your surname</SurName>
+      <EmailAddress>GX:mailto:your@email.address</EmailAddress>
+    </ContactPerson>
+
+</EntityDescriptor>

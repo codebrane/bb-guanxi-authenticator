@@ -1,0 +1,1 @@
+@@bbconfig.basedir@@/systemlib/bb-guanxi-authenticator-1.0.0.jar
