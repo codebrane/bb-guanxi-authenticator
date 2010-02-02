@@ -52,9 +52,11 @@ public class GuanxiAuthenticator extends BaseAuthenticationModule {
   /** The delimiter the Guard uses to separate multiple values for an attribute */
   private static final String ATTRIBUTE_MULTI_VALUE_DELIMITER = ";";
 
-  private int LOG_LEVEL_INFO = -1;
-  private int LOG_LEVEL_WARN = -2;
-  private int LOG_LEVEL_ERROR = -3;
+  /** Logging definitions */
+  private static final String LOG_MESSAGE_PREFIX = "GX:";
+  private static final int INFO = -1;
+  private static final int WARN = -2;
+  private static final int ERROR = -3;
 
   // Instance variable populated by our config in config/authentication.properties
   private String uidAttributeName = null;
@@ -122,11 +124,11 @@ public class GuanxiAuthenticator extends BaseAuthenticationModule {
     }
 
     if (userID == null) {
-      error(request, response);
+      errorAndLogout(request, response, "No user uid attribute found");
       throw new BbCredentialsNotFoundException("No user specified");  
     }
     else if (!userExists(userID)) {
-      error(request, response);
+      errorAndLogout(request, response, "User " + userID + " does not exist");
       throw new BbSecurityException("User " + userID + " does not exist");
     }
     else {
@@ -183,15 +185,17 @@ public class GuanxiAuthenticator extends BaseAuthenticationModule {
    *
    * @param request the request
    * @param response the response
+   * @param message the message to log
    */
-  private void error(HttpServletRequest request, HttpServletResponse response) {
+  private void errorAndLogout(HttpServletRequest request, HttpServletResponse response, String message) {
     try {
-      log("GUANXI_ERROR: nae user!");
+      log(ERROR, message);
       doGuardLogout(request, guanxiGuardCookieNameHeader);
       request.setAttribute("gxMessage", "The user does not exist. Please close the browser before trying again.");
       request.getRequestDispatcher(errorPage).forward(request, response);
     }
     catch(Exception e) {
+      log(ERROR, e.getMessage());
     }
   }
 
@@ -216,7 +220,23 @@ public class GuanxiAuthenticator extends BaseAuthenticationModule {
     }
   }
 
-  private void log(String message) {
-    _logger.logError(message);
+  /**
+   * Logs to logs/bb-services-log.txt
+   *
+   * @param level the log level
+   * @param message the log message
+   */
+  private void log(int level, String message) {
+    switch(level) {
+      case INFO:
+        _logger.logInfo(LOG_MESSAGE_PREFIX + message);
+        break;
+      case WARN:
+        _logger.logWarning(LOG_MESSAGE_PREFIX + message);
+        break;
+      case ERROR:
+        _logger.logError(LOG_MESSAGE_PREFIX + message);
+        break;
+    }
   }
 }
