@@ -52,6 +52,10 @@ public class GuanxiAuthenticator extends BaseAuthenticationModule {
   /** The delimiter the Guard uses to separate multiple values for an attribute */
   private static final String ATTRIBUTE_MULTI_VALUE_DELIMITER = ";";
 
+  private int LOG_LEVEL_INFO = -1;
+  private int LOG_LEVEL_WARN = -2;
+  private int LOG_LEVEL_ERROR = -3;
+
   // Instance variable populated by our config in config/authentication.properties
   private String uidAttributeName = null;
   private boolean createUser = false;
@@ -182,6 +186,7 @@ public class GuanxiAuthenticator extends BaseAuthenticationModule {
    */
   private void error(HttpServletRequest request, HttpServletResponse response) {
     try {
+      log("GUANXI_ERROR: nae user!");
       doGuardLogout(request, guanxiGuardCookieNameHeader);
       request.setAttribute("gxMessage", "The user does not exist. Please close the browser before trying again.");
       request.getRequestDispatcher(errorPage).forward(request, response);
@@ -209,5 +214,9 @@ public class GuanxiAuthenticator extends BaseAuthenticationModule {
         }
       }
     }
+  }
+
+  private void log(String message) {
+    _logger.logError(message);
   }
 }

@@ -2,6 +2,7 @@ Blackboard Shibboleth/SAML2 Guanxi Authenticator
 ================================================
 
 o Introduction
+o Requirements
 o Building the authenticator
 o Installing the authenticator
 o Installing the Guanxi Engine
@@ -24,6 +25,10 @@ SSO. There are three parts to the system:
 
 If you're new to Guanxi, it's best to follow the localhost tutorial first:
 http://www.guanxi.uhi.ac.uk/index.php/Guanxi_localhost_2
+
+Requirements
+------------
+These instructions assume at least Guard version 2.1.0 and Engine version 2.1.0
 
 Building the authenticator
 --------------------------
@@ -55,6 +60,11 @@ Copy these files:
 resources/shib-common.classpath
 resources/shib-common.classpath.bb
 to: BLACKBOARD_HOME/config/tomcat/classpath
+
+Copy this file:
+resources/sp_error.jsp
+to:
+BLACKBOARD_HOME/webapps/login/WEB-INF/guanxi_sp_guard/jsp
 
 Change BLACKBOARD_HOME/config/bb-config.properties to:
 bbconfig.auth.type=shib
