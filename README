@@ -30,7 +30,7 @@ http://www.guanxi.uhi.ac.uk/index.php/Guanxi_localhost_2
 
 Requirements
 ------------
-These instructions assume at least Guard version 2.2.0 and Engine version 2.2.0
+These instructions assume at least Guard version 2.2.1 and Engine version 2.2.0
 
 Building the authenticator
 --------------------------
@@ -41,22 +41,22 @@ Installing the authenticator
 BLACKBOARD_HOME is where you have installed Blackboard. e.g. C:\blackboard or
 /usr/local/blackboard.
 
-Copy target/bb-guanxi-authenticator-1.0.1.jar to BLACKBOARD_HOME/systemlib
+Copy target/bb-guanxi-authenticator-1.1.0.jar to BLACKBOARD_HOME/systemlib
 
 Add this line to the file: BLACKBOARD_HOME/apps/collab-server/collab-start.bat
-set COLLAB_CLASSPATH=%COLLAB_CLASSPATH%;%BASEDIR%\systemlib\bb-guanxi-authenticator-1.0.1.jar
+set COLLAB_CLASSPATH=%COLLAB_CLASSPATH%;%BASEDIR%\systemlib\bb-guanxi-authenticator-1.1.0.jar
 
 Add this line to the file: BLACKBOARD_HOME/apps/collab-server/collab-start.bat.bb
-set COLLAB_CLASSPATH=%COLLAB_CLASSPATH%;%BASEDIR%\systemlib\bb-guanxi-authenticator-1.0.1.jar
+set COLLAB_CLASSPATH=%COLLAB_CLASSPATH%;%BASEDIR%\systemlib\bb-guanxi-authenticator-1.1.0.jar
 
 Add this line to the file: BLACKBOARD_HOME/apps/collab-server/config/wrapper.conf
-wrapper.java.classpath.41=C:/blackboard/systemlib/bb-guanxi-authenticator-1.0.1.jar
+wrapper.java.classpath.41=C:/blackboard/systemlib/bb-guanxi-authenticator-1.1.0.jar
 
 Add this line to the file: BLACKBOARD_HOME/apps/collab-server/config/wrapper.conf.bb
-wrapper.java.classpath.41=@@bbconfig.basedir@@/systemlib/bb-guanxi-authenticator-1.0.1.jar
+wrapper.java.classpath.41=@@bbconfig.basedir@@/systemlib/bb-guanxi-authenticator-1.1.0.jar
 
 Add this line to the file: BLACKBOARD_HOME/system/build/bin/launch-tool.bat
-set THIRD_PARTY_CP=%THIRD_PARTY_CP%;..\systemlib\bb-guanxi-authenticator-1.0.1.jar
+set THIRD_PARTY_CP=%THIRD_PARTY_CP%;..\systemlib\bb-guanxi-authenticator-1.1.0.jar
 
 Copy these files:
 resources/shib-common.classpath
