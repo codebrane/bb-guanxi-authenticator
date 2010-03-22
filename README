@@ -5,8 +5,10 @@ o Introduction
 o Requirements
 o Building the authenticator
 o Installing the authenticator
+o LDAP or Blackboard fallback
 o Installing the Guanxi Engine
 o Installing the Guanxi Guard
+o Disabling the Guanxi Guard
 o SSO in use
 o More information
 
@@ -28,7 +30,7 @@ http://www.guanxi.uhi.ac.uk/index.php/Guanxi_localhost_2
 
 Requirements
 ------------
-These instructions assume at least Guard version 2.1.0 and Engine version 2.1.0
+These instructions assume at least Guard version 2.2.0 and Engine version 2.2.0
 
 Building the authenticator
 --------------------------
@@ -39,22 +41,22 @@ Installing the authenticator
 BLACKBOARD_HOME is where you have installed Blackboard. e.g. C:\blackboard or
 /usr/local/blackboard.
 
-Copy target/bb-guanxi-authenticator-1.0.0.jar to BLACKBOARD_HOME/systemlib
+Copy target/bb-guanxi-authenticator-1.0.1.jar to BLACKBOARD_HOME/systemlib
 
 Add this line to the file: BLACKBOARD_HOME/apps/collab-server/collab-start.bat
-set COLLAB_CLASSPATH=%COLLAB_CLASSPATH%;%BASEDIR%\systemlib\bb-guanxi-authenticator-1.0.0.jar
+set COLLAB_CLASSPATH=%COLLAB_CLASSPATH%;%BASEDIR%\systemlib\bb-guanxi-authenticator-1.0.1.jar
 
 Add this line to the file: BLACKBOARD_HOME/apps/collab-server/collab-start.bat.bb
-set COLLAB_CLASSPATH=%COLLAB_CLASSPATH%;%BASEDIR%\systemlib\bb-guanxi-authenticator-1.0.0.jar
+set COLLAB_CLASSPATH=%COLLAB_CLASSPATH%;%BASEDIR%\systemlib\bb-guanxi-authenticator-1.0.1.jar
 
 Add this line to the file: BLACKBOARD_HOME/apps/collab-server/config/wrapper.conf
-wrapper.java.classpath.41=C:/blackboard/systemlib/bb-guanxi-authenticator-1.0.0.jar
+wrapper.java.classpath.41=C:/blackboard/systemlib/bb-guanxi-authenticator-1.0.1.jar
 
 Add this line to the file: BLACKBOARD_HOME/apps/collab-server/config/wrapper.conf.bb
-wrapper.java.classpath.41=@@bbconfig.basedir@@/systemlib/bb-guanxi-authenticator-1.0.0.jar
+wrapper.java.classpath.41=@@bbconfig.basedir@@/systemlib/bb-guanxi-authenticator-1.0.1.jar
 
 Add this line to the file: BLACKBOARD_HOME/system/build/bin/launch-tool.bat
-set THIRD_PARTY_CP=%THIRD_PARTY_CP%;..\systemlib\bb-guanxi-authenticator-1.0.0.jar
+set THIRD_PARTY_CP=%THIRD_PARTY_CP%;..\systemlib\bb-guanxi-authenticator-1.0.1.jar
 
 Copy these files:
 resources/shib-common.classpath
@@ -64,22 +66,53 @@ to: BLACKBOARD_HOME/config/tomcat/classpath
 Copy this file:
 resources/sp_error.jsp
 to:
-BLACKBOARD_HOME/webapps/login/WEB-INF/guanxi_sp_guard/jsp
+BLACKBOARD_HOME/webapps/shibb/WEB-INF/guanxi_sp_guard/jsp
 
 Change BLACKBOARD_HOME/config/bb-config.properties to:
-bbconfig.auth.type=shib
+bbconfig.auth.type=ldap
 
 Open BLACKBOARD_HOME/config/authentication.properties
-Comment out all existing auth.type.shib keys
-Copy contents of resources/shib-authentication.properties to:
+Change the ldap impl from:
+auth.type.ldap.impl=blackboard.platform.security.authentication.LDAPAuthModule
+to:
+auth.type.ldap.impl=org.guanxi.sp.guard.blackboard.GuanxiAuthenticator
+
+Add the contents of resources/shib-authentication.properties to the ldap settings in:
 BLACKBOARD_HOME/config/authentication.properties
 
 To upgrade the authenticator jar copy it to:
 BLACKBOARD_HOME/systemlib
 BLACKBOARD_HOME/apps/tomcat/common/lib
 
+LDAP or Blackboard fallback
+---------------------------
+The authenticator is designed to extend the LDAP authenticator in Blackboard, which means you
+can use the configuration options for the LDAP authenticator along with the Guanxi ones. This
+lets you fallback to LDAP authentication if Shibboleth/SAML2 fails and then to fallback to
+Blackboard database authentication if LDAP authentication fails.
+If you don't have LDAP authentication configured in Blackboard, you'll need to do some extra
+work. Not much but some. To use the Guanxi authenticator with fallback to Blackboard database
+authentication do this:
+- Open the file src/main/java/org/guanxi/sp/guard/blackboard/GuanxiAuthenticator.java
+- Change the line:
+  public class GuanxiAuthenticator extends LDAPAuthModule {
+  to:
+  public class GuanxiAuthenticator extends BaseAuthenticationModule {
+- mvn clean install
+- Copy the new jar as before
+- Open BLACKBOARD_HOME/config/authentication.properties
+- Change:
+  auth.type.rdbms.impl=blackboard.platform.security.authentication.BaseAuthenticationModule
+  to:
+  auth.type.rdbms.impl=org.guanxi.sp.guard.blackboard.GuanxiAuthenticator
+- Add the contents of resources/shib-authentication.properties but with rdbms instead of ldap, i.e.
+  auth.type.rdbms.uid_attribute=cn
+  etc
+
 Installing the Guanxi Guard
 ---------------------------
+Backup BLACKBOARD_HOME/webapps/login
+
 GUANXI_GUARD_HOME is where you extract the latest binary Guanxi Guard release.
 
 Download the latest binary version of the Guanxi Guard:
@@ -99,10 +132,12 @@ BLACKBOARD_HOME/webapps/login/WEB-INF/classes
 Copy GUANXI_GUARD_HOME/WEB-INF/guanxi_sp_guard to:
 BLACKBOARD_HOME/webapps/login/WEB-INF
 
-Edit the file BLACKBOARD_HOME/webapps/login/WEB-INF/guanxi_sp_guard/config/guanxi-sp-guard.xml to
-change:
+Edit the file BLACKBOARD_HOME/webapps/login/WEB-INF/guanxi_sp_guard/config/guanxi-sp-guard.xml to change:
 HostName, ID, Cookie/Domain and the EngineInfo URLs
 The Guard ID is the entityID of the Guard.
+If you only use one IdP, put its entityID in the section DefaultEntityID. This will bypass the WAYF
+and put Blackboard into SAML2 mode. Shibboleth will not be used in this case unless the IdP does not
+support the SAML2 Web Browser SSO profile.
 
 Register the Guard with the Engine as per the localhost tutorial:
 http://www.guanxi.uhi.ac.uk/index.php/Guanxi_localhost_2#Registering_the_Guard_with_the_Engine
@@ -118,22 +153,35 @@ The password for the Keystore is in bbguard.xml
 The alias is the entityID of the Guard you registered with the Engine.
 Add the updated metadata.xml to the IdP.
 
+Disabling the Guanxi Guard
+--------------------------
+If you need to remove Shibboleth/SAML2 authentication in a hurry, open BLACKBOARD_HOME/webapps/login/WEB-INF/web.xml
+and change:
+<filter-mapping>
+  <filter-name>Guanxi Resource Guard</filter-name>
+  <url-pattern>/*</url-pattern>
+</filter-mapping>
+to:
+<filter-mapping>
+  <filter-name>Guanxi Resource Guard</filter-name>
+  <url-pattern>/off</url-pattern>
+</filter-mapping>
+restart and Blackboard will revert to normal authentication.
+
 SSO in use
 ----------
 By default, the Guard uses SAML2 Web Browser SSO profile and you can choose to use a default IdP
-by changing BLACKBOARD_HOME/webapps/login/WEB-INF/guanxi_sp_guard/config/guanxi-sp-guard.xml:
-<Profile name="saml2-web-browser-sso" path="^(/\w*)(/login/.*)" defaultID="IDP_ENTITY_ID"/>
+by changing the file:
+BLACKBOARD_HOME/webapps/login/WEB-INF/guanxi_sp_guard/config/guanxi-sp-guard.xml
+by adding the IdP's entityID:
+<DefaultEntityID>IDP_ENTITY_ID</DefaultEntityID>
 otherwise you will have to login to Blackboard using the URL:
 http://www.your.bb.com/webapps/login?entityID=IDP_ENTITY_ID
-
-To switch to using Shibboleth instead of SAML2, change the Profile to this:
-<Profile name="shibboleth" path="^(/\w*)(/login/.*)" />
-and you can use your normal login URL but you will have to choose your IdP from the WAYF.
+If you don't provide an entityID parameter, the authenticator will use Shibboleth instead. In this case
+you can either use a WAYF or configure the IdP to give to the Guard via the Engine.
 
 When you logout of Blackboard, your Shibboleth/SAML2 session will be destroyed but you will still
-be logged in to your IdP. So if you are using SAML2 with a default IdP you will be able to log
-straight back in without authenticating at the IdP. If you are using Shibboleth, you will need to
-choose your IdP from the WAYF again but will not have to authenticate again.
+be logged in to your IdP. So you will be able to log straight back in without authenticating at the IdP. 
 To clear your IdP session you must close the browser.
 
 More information
