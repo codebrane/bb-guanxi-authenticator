@@ -6,7 +6,7 @@
   <description>Blackboard authenticator for Guanxi</description>
   <groupId>org.guanxi.sp.guard.blackboard</groupId>
   <artifactId>bb-guanxi-authenticator</artifactId>
-  <version>1.0.0</version>
+  <version>1.1.0</version>
 
   <organization>
     <name>UHI Millennium Institute</name>
