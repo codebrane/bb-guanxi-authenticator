@@ -34,7 +34,7 @@ import java.util.Enumeration;
  *
  * @author alistair
  */
-public class GuanxiAuthenticator extends BaseAuthenticationModule {
+public class GuanxiAuthenticator extends LDAPAuthModule {
   /** The name of the attribute that holds the uid of the user */
   private static final String PROPERTY_KEY_UID_ATTRIBUTE = "uid_attribute";
   /** Whether to automatically create users if they don't exist */
@@ -65,6 +65,10 @@ public class GuanxiAuthenticator extends BaseAuthenticationModule {
   private String attributePrefix = null;
   private String errorPage = null;
 
+  public GuanxiAuthenticator() {
+    super();
+  }
+
   /**
    * The list of config options we support. These should be declared in
    * config/authentication.properties
@@ -79,12 +83,16 @@ public class GuanxiAuthenticator extends BaseAuthenticationModule {
 
   /** @see blackboard.platform.security.authentication.BaseAuthenticationModule#getPropKeys() */
   public String[] getPropKeys() {
-    return SHIB_PROP_KEYS;
+    String[] basePropKeys = super.getPropKeys();
+    String[] combinedPropKeys = new String[(basePropKeys.length + SHIB_PROP_KEYS.length)];
+    System.arraycopy(basePropKeys, 0, combinedPropKeys, 0, basePropKeys.length);
+    System.arraycopy(SHIB_PROP_KEYS, 0, combinedPropKeys, basePropKeys.length, SHIB_PROP_KEYS.length);
+    return combinedPropKeys;
   }
 
   /** @see blackboard.platform.security.authentication.BaseAuthenticationModule#setConfig(blackboard.platform.security.authentication.HttpAuthConfig) */
   public void setConfig(HttpAuthConfig config) {
-    _config = config;
+    super.setConfig(config);
   }
 
   /** @see blackboard.platform.security.authentication.BaseAuthenticationModule#init(blackboard.platform.config.ConfigurationService) */
@@ -124,16 +132,19 @@ public class GuanxiAuthenticator extends BaseAuthenticationModule {
     }
 
     if (userID == null) {
-      errorAndLogout(request, response, "No user uid attribute found");
-      throw new BbCredentialsNotFoundException("No user specified");  
+      return super.doAuthenticate(request, response);
     }
     else if (!userExists(userID)) {
-      errorAndLogout(request, response, "User " + userID + " does not exist");
-      throw new BbSecurityException("User " + userID + " does not exist");
+      throw new BbCredentialsNotFoundException("User " + userID + " does not exist");
     }
     else {
       return userID;
     }
+  }
+
+  protected String authenticate(String username, String password, SessionStub sessionStub, boolean useChallenge)
+          throws BbAuthenticationFailedException, BbSecurityException {
+    return super.authenticate(username, password, sessionStub, useChallenge);
   }
 
   /** @see blackboard.platform.security.authentication.BaseAuthenticationModule#doLogout(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse) */
@@ -146,7 +157,7 @@ public class GuanxiAuthenticator extends BaseAuthenticationModule {
 
   /** @see blackboard.platform.security.authentication.BaseAuthenticationModule#getAuthType() */
   public String getAuthType() {
-    return "shib";
+    return "ldap";
   }
 
   /**
@@ -191,7 +202,7 @@ public class GuanxiAuthenticator extends BaseAuthenticationModule {
     try {
       log(ERROR, message);
       doGuardLogout(request, guanxiGuardCookieNameHeader);
-      request.setAttribute("gxMessage", "The user does not exist. Please close the browser before trying again.");
+      request.setAttribute("gxMessage", message + " Please close the browser before trying again.");
       request.getRequestDispatcher(errorPage).forward(request, response);
     }
     catch(Exception e) {
