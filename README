@@ -41,32 +41,36 @@ Installing the authenticator
 BLACKBOARD_HOME is where you have installed Blackboard. e.g. C:\blackboard or
 /usr/local/blackboard.
 
-Copy target/bb-guanxi-authenticator-1.1.0.jar to BLACKBOARD_HOME/systemlib
+SHIBB_HOME is where you downloaded the Guanxi Shibboleth Authenticator, e.g.
+C:\temp\bb-guanxi-authenticator
 
-Add this line to the file: BLACKBOARD_HOME/apps/collab-server/collab-start.bat
-set COLLAB_CLASSPATH=%COLLAB_CLASSPATH%;%BASEDIR%\systemlib\bb-guanxi-authenticator-1.1.0.jar
+Copy SHIBB_HOME/target/bb-guanxi-authenticator-1.1.0.jar to BLACKBOARD_HOME/systemlib
+Copy SHIBB_HOME/target/bb-guanxi-authenticator-1.1.0.jar to BLACKBOARD_HOME/apps/tomcat/common/lib
 
-Add this line to the file: BLACKBOARD_HOME/apps/collab-server/collab-start.bat.bb
-set COLLAB_CLASSPATH=%COLLAB_CLASSPATH%;%BASEDIR%\systemlib\bb-guanxi-authenticator-1.1.0.jar
+Windows:
+  Add this line to the file: BLACKBOARD_HOME/apps/collab-server/collab-start.bat
+    set COLLAB_CLASSPATH=%COLLAB_CLASSPATH%;%BASEDIR%\systemlib\bb-guanxi-authenticator-1.1.0.jar
+	Add this line to the file: BLACKBOARD_HOME/apps/collab-server/collab-start.bat.bb
+	  set COLLAB_CLASSPATH=%COLLAB_CLASSPATH%;%BASEDIR%\systemlib\bb-guanxi-authenticator-1.1.0.jar
+	Add this line to the file: BLACKBOARD_HOME/apps/collab-server/config/wrapper.conf
+	  wrapper.java.classpath.41=C:/blackboard/systemlib/bb-guanxi-authenticator-1.1.0.jar
+	Add this line to the file: BLACKBOARD_HOME/apps/collab-server/config/wrapper.conf.bb
+		wrapper.java.classpath.41=@@bbconfig.basedir@@/systemlib/bb-guanxi-authenticator-1.1.0.jar
+	Add this line to the file: BLACKBOARD_HOME/system/build/bin/launch-tool.bat
+		set THIRD_PARTY_CP=%THIRD_PARTY_CP%;..\systemlib\bb-guanxi-authenticator-1.1.0.jar
 
-Add this line to the file: BLACKBOARD_HOME/apps/collab-server/config/wrapper.conf
-wrapper.java.classpath.41=C:/blackboard/systemlib/bb-guanxi-authenticator-1.1.0.jar
-
-Add this line to the file: BLACKBOARD_HOME/apps/collab-server/config/wrapper.conf.bb
-wrapper.java.classpath.41=@@bbconfig.basedir@@/systemlib/bb-guanxi-authenticator-1.1.0.jar
-
-Add this line to the file: BLACKBOARD_HOME/system/build/bin/launch-tool.bat
-set THIRD_PARTY_CP=%THIRD_PARTY_CP%;..\systemlib\bb-guanxi-authenticator-1.1.0.jar
+Unix:
+  Add this line to the file: BLACKBOARD_HOME/apps/collab-server/collabserverctl.sh
+    COLLAB_CLASSPATH="$COLLAB_CLASSPATH:$BASEDIR/systemlib/bb-guanxi-authenticator-1.1.0.jar"
+  Add this line to the file: BLACKBOARD_HOME/apps/collab-server/collabserverctl.sh.bb
+    COLLAB_CLASSPATH="$COLLAB_CLASSPATH:$BASEDIR/systemlib/bb-guanxi-authenticator-1.1.0.jar"
+  Add this line to the file: BLACKBOARD_HOME/system/build/bin/launch-tool.sh
+    THIRD_PARTY_CP=$THIRD_PARTY_CP:../systemlib/bb-guanxi-authenticator-1.1.0.jar
 
 Copy these files:
-resources/shib-common.classpath
-resources/shib-common.classpath.bb
+SHIBB_HOME/resources/shib-common.classpath
+SHIBB_HOME/resources/shib-common.classpath.bb
 to: BLACKBOARD_HOME/config/tomcat/classpath
-
-Copy this file:
-resources/sp_error.jsp
-to:
-BLACKBOARD_HOME/webapps/shibb/WEB-INF/guanxi_sp_guard/jsp
 
 Change BLACKBOARD_HOME/config/bb-config.properties to:
 bbconfig.auth.type=ldap
@@ -77,7 +81,7 @@ auth.type.ldap.impl=blackboard.platform.security.authentication.LDAPAuthModule
 to:
 auth.type.ldap.impl=org.guanxi.sp.guard.blackboard.GuanxiAuthenticator
 
-Add the contents of resources/shib-authentication.properties to the ldap settings in:
+Add the contents of SHIBB_HOME/resources/shib-authentication.properties to the ldap settings in:
 BLACKBOARD_HOME/config/authentication.properties
 
 To upgrade the authenticator jar copy it to:
@@ -131,6 +135,9 @@ BLACKBOARD_HOME/webapps/login/WEB-INF/classes
 
 Copy GUANXI_GUARD_HOME/WEB-INF/guanxi_sp_guard to:
 BLACKBOARD_HOME/webapps/login/WEB-INF
+
+Copy SHIBB_HOME/resources/sp_error.jsp to:
+BLACKBOARD_HOME/webapps/login/WEB-INF/guanxi_sp_guard/jsp
 
 Edit the file BLACKBOARD_HOME/webapps/login/WEB-INF/guanxi_sp_guard/config/guanxi-sp-guard.xml to change:
 HostName, ID, Cookie/Domain and the EngineInfo URLs
