@@ -179,7 +179,7 @@ public class GuanxiAuthenticator extends LDAPAuthModule {
 
     // Try to load person
     try {
-      personLoader.load(userID);
+      personLoader.load(userID.toLowerCase());
       return true;
     }
     catch (KeyNotFoundException knfe) {
