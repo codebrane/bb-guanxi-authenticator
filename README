@@ -44,28 +44,28 @@ BLACKBOARD_HOME is where you have installed Blackboard. e.g. C:\blackboard or
 SHIBB_HOME is where you downloaded the Guanxi Shibboleth Authenticator, e.g.
 C:\temp\bb-guanxi-authenticator
 
-Copy SHIBB_HOME/target/bb-guanxi-authenticator-1.1.0.jar to BLACKBOARD_HOME/systemlib
-Copy SHIBB_HOME/target/bb-guanxi-authenticator-1.1.0.jar to BLACKBOARD_HOME/apps/tomcat/common/lib
+Copy SHIBB_HOME/target/bb-guanxi-authenticator-1.1.1.jar to BLACKBOARD_HOME/systemlib
+Copy SHIBB_HOME/target/bb-guanxi-authenticator-1.1.1.jar to BLACKBOARD_HOME/apps/tomcat/common/lib
 
 Windows:
   Add this line to the file: BLACKBOARD_HOME/apps/collab-server/collab-start.bat
-    set COLLAB_CLASSPATH=%COLLAB_CLASSPATH%;%BASEDIR%\systemlib\bb-guanxi-authenticator-1.1.0.jar
+    set COLLAB_CLASSPATH=%COLLAB_CLASSPATH%;%BASEDIR%\systemlib\bb-guanxi-authenticator-1.1.1.jar
 	Add this line to the file: BLACKBOARD_HOME/apps/collab-server/collab-start.bat.bb
-	  set COLLAB_CLASSPATH=%COLLAB_CLASSPATH%;%BASEDIR%\systemlib\bb-guanxi-authenticator-1.1.0.jar
+	  set COLLAB_CLASSPATH=%COLLAB_CLASSPATH%;%BASEDIR%\systemlib\bb-guanxi-authenticator-1.1.1.jar
 	Add this line to the file: BLACKBOARD_HOME/apps/collab-server/config/wrapper.conf
-	  wrapper.java.classpath.41=C:/blackboard/systemlib/bb-guanxi-authenticator-1.1.0.jar
+	  wrapper.java.classpath.41=C:/blackboard/systemlib/bb-guanxi-authenticator-1.1.1.jar
 	Add this line to the file: BLACKBOARD_HOME/apps/collab-server/config/wrapper.conf.bb
-		wrapper.java.classpath.41=@@bbconfig.basedir@@/systemlib/bb-guanxi-authenticator-1.1.0.jar
+		wrapper.java.classpath.41=@@bbconfig.basedir@@/systemlib/bb-guanxi-authenticator-1.1.1.jar
 	Add this line to the file: BLACKBOARD_HOME/system/build/bin/launch-tool.bat
-		set THIRD_PARTY_CP=%THIRD_PARTY_CP%;..\systemlib\bb-guanxi-authenticator-1.1.0.jar
+		set THIRD_PARTY_CP=%THIRD_PARTY_CP%;..\systemlib\bb-guanxi-authenticator-1.1.1.jar
 
 Unix:
   Add this line to the file: BLACKBOARD_HOME/apps/collab-server/collabserverctl.sh
-    COLLAB_CLASSPATH="$COLLAB_CLASSPATH:$BASEDIR/systemlib/bb-guanxi-authenticator-1.1.0.jar"
+    COLLAB_CLASSPATH="$COLLAB_CLASSPATH:$BASEDIR/systemlib/bb-guanxi-authenticator-1.1.1.jar"
   Add this line to the file: BLACKBOARD_HOME/apps/collab-server/collabserverctl.sh.bb
-    COLLAB_CLASSPATH="$COLLAB_CLASSPATH:$BASEDIR/systemlib/bb-guanxi-authenticator-1.1.0.jar"
+    COLLAB_CLASSPATH="$COLLAB_CLASSPATH:$BASEDIR/systemlib/bb-guanxi-authenticator-1.1.1.jar"
   Add this line to the file: BLACKBOARD_HOME/system/build/bin/launch-tool.sh
-    THIRD_PARTY_CP=$THIRD_PARTY_CP:../systemlib/bb-guanxi-authenticator-1.1.0.jar
+    THIRD_PARTY_CP=$THIRD_PARTY_CP:../systemlib/bb-guanxi-authenticator-1.1.1.jar
 
 Copy these files:
 SHIBB_HOME/resources/shib-common.classpath
